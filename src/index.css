@@ -5,9 +5,19 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(to left, rgba(60, 137, 176, 1) 0%,  rgba(180, 82, 172, 1) 100%);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+button {
+  cursor: pointer;
+}
+
+.centro{
+  display: flex;
+  justify-content: center;
 }
