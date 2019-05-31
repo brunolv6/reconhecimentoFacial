@@ -33,14 +33,14 @@ class App extends Component{
 		imgUrl: '',
 		router: 'signIn',
 		isSignedIn: false,
-		box: {}
+		box: []
 	}
 
-	calculateFace = (data) =>{
+	/* calculateFace = (data) =>{
 		const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
 		console.log(clarifaiFace);
 		const image = document.getElementById('imageInput');
-		const width = Number(image.width); /* garante que é um número */
+		const width = Number(image.width); garante que é um número
 		const height = Number(image.height);
 		console.log(width, height);
 		return {
@@ -49,11 +49,32 @@ class App extends Component{
 			rightCol: width - (clarifaiFace.right_col * width),
 			bottomRow: height - (clarifaiFace.bottom_row * height)
 		}
+	} */
+
+	calculateFace = (data) =>{
+		const clarifaiFace = data.outputs[0].data.regions;
+		const image = document.getElementById('imageInput');
+		const width = Number(image.width); /* garante que é um número */
+		const height = Number(image.height);
+		const box = clarifaiFace.map((n) => {
+			return {
+				leftCol: n.region_info.bounding_box.left_col * width,
+				topRow: n.region_info.bounding_box.top_row * height,
+				rightCol: width - (n.region_info.bounding_box.right_col * width),
+				bottomRow: height - (n.region_info.bounding_box.bottom_row * height)
+			}
+		});
+		/* box.map((i)=> {
+			console.log(i.leftCol, i.topRow, i.rightCol, i.bottomRow);
+		}) */
+		console.log(box[0].topRow);
+		return box;
 	}
 
 	displayFaceBox = (box) =>{
 		console.log(box);
 		this.setState({box: box});
+		console.log('a', this.state.box[0].topRow, 'e');
 	}
 
 	//recebe o valor da mudança dentro do input
