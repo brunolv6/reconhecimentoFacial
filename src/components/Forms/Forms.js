@@ -4,7 +4,7 @@ import './Style.css';
 const Forms = ({onInputChange, onButtonSubmit}) =>{
     return(
         <div className='tc'>
-            <p><h2>Let's try the Magic Brain! Find a FACE in your photo! </h2></p>
+            <p className='f3 b'>Let's try the Magic Brain! Find a FACE in your photo! </p>
             <div className='centro'>
                 <div className='amarelo shadow-5'>
                     <div className='centro'>
