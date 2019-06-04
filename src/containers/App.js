@@ -38,15 +38,6 @@ class App extends Component{
 			box: {}
 		}
 	}
-
- 	componentDidMount() {
-		 //segue esta path de um servidor e pega o result em json
-		fetch('http://localhost:3000/')
-			//transforma a response que veio do servidor em json
-			.then(response => response.json())
-			//imprime o dado que veio do servidor
-			.then(data => console.log(data)) //podia ser só ".then(console.log())"
-	}
  
 	calculateFace = (data) =>{
 		const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
