@@ -35,8 +35,13 @@ class SignForm extends Component {
                 email: this.state.email,
                 password: this.state.password
             })
-        });
-        this.props.changePage('home');
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(data === 'Você esta logado!'){
+                    this.props.changePage('home');
+                }
+            })
     }
 
     render(){
