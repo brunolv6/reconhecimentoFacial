@@ -35,10 +35,29 @@ class App extends Component{
 			imgUrl: '',
 			router: 'signIn',
 			isSignedIn: false,
-			box: {}
+			box: {},
+			user: {
+				id: '',
+				name: '',
+				email: '',
+				entries: 0,
+				joined: ''
+			}
 		}
 	}
  
+	
+	loadUser = (data) => {
+		this.setState({user: {
+			id: data.id,
+			name: data.name,
+			email: data.email,
+			entries: data.entries,
+			joined: data.joined
+		}})
+		console.log(this.state.user);
+	}
+
 	calculateFace = (data) =>{
 		const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
 		console.log(clarifaiFace);
@@ -71,7 +90,23 @@ class App extends Component{
 		this.setState({imgUrl: this.state.input}); /* tenho que passar pelo input antes, senão da erro específico */
 		app.models
 			.predict('a403429f2ddf4b49b307e318f00e528b', this.state.input)
-			.then(response => this.displayFaceBox(this.calculateFace(response)))
+			.then(response => {
+				if(response){
+					fetch('http://localhost:3000/image', {
+						method: 'post',
+						headers: {'Content-type': 'application/json'},
+						body: JSON.stringify({
+							id: this.state.user.id
+						})
+					})
+						.then(response => response.json())
+						.then(count => {
+							//importante fazer assim para mudar apenas um parametro no estado do user e não todos!!
+							this.setState(Object.assign(this.state.user, { entries: count}))
+						})
+				}
+				this.displayFaceBox(this.calculateFace(response))
+			})
 			.catch(err => console.log(err));
 	}
 
@@ -94,13 +129,13 @@ class App extends Component{
 				{(this.state.router === 'signIn')
 					? 
 					<div>
-						<SignForm changePage={this.changePage}/>
+						<SignForm changePage={this.changePage} loadUser={this.loadUser}/>
 					</div>
 					: 
 					( (this.state.router === 'home')
 						?
 						<div>
-							<Rank  className='mb7'/>
+							<Rank  className='mb7' name={this.state.user.name} entries={this.state.user.entries}/>
 							<Forms 
 								onInputChange={this.onInputChange} 
 								onButtonSubmit={this.onButtonSubmit}
@@ -108,7 +143,7 @@ class App extends Component{
 							<Image box={this.state.box} imagem={this.state.imgUrl}/>
 						</div>
 						:
-						<Register changePage={this.changePage}/>
+						<Register changePage={this.changePage} loadUser={this.loadUser}/>
 					)
 				}
 			</div>

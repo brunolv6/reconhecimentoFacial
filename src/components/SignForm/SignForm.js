@@ -37,8 +37,9 @@ class SignForm extends Component {
             })
         })
             .then(response => response.json())
-            .then(data => {
-                if(data === 'sucesso') {
+            .then(user => {
+                if(user.id) {
+                    this.props.loadUser(user)
                     this.props.changePage('home')
                 }
             })
