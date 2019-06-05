@@ -91,15 +91,20 @@ class App extends Component{
 		app.models
 			.predict('a403429f2ddf4b49b307e318f00e528b', this.state.input)
 			.then(response => {
-				/* if(response){
+				if(response){
 					fetch('http://localhost:3000/image', {
 						method: 'post',
 						headers: {'Content-type': 'application/json'},
 						body: JSON.stringify({
-							id: this.state.id
+							id: this.state.user.id
 						})
 					})
-				} */
+						.then(response => response.json())
+						.then(count => {
+							//importante fazer assim para mudar apenas um parametro no estado do user e não todos!!
+							this.setState(Object.assign(this.state.user, { entries: count}))
+						})
+				}
 				this.displayFaceBox(this.calculateFace(response))
 			})
 			.catch(err => console.log(err));
@@ -124,13 +129,13 @@ class App extends Component{
 				{(this.state.router === 'signIn')
 					? 
 					<div>
-						<SignForm changePage={this.changePage}/>
+						<SignForm changePage={this.changePage} loadUser={this.loadUser}/>
 					</div>
 					: 
 					( (this.state.router === 'home')
 						?
 						<div>
-							<Rank  className='mb7'/>
+							<Rank  className='mb7' name={this.state.user.name} entries={this.state.user.entries}/>
 							<Forms 
 								onInputChange={this.onInputChange} 
 								onButtonSubmit={this.onButtonSubmit}
