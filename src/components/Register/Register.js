@@ -5,22 +5,23 @@ class Register extends Component{
     constructor(){
         super();
         this.state = {
-            name: '',
-            email: '',
-            password: ''
+            nameR: '',
+            emailR: '',
+            passwordR: ''
         }
     }
 
     onChangeName = (event) => {
-        this.setState({name: event.target.value});
+        this.setState({nameR: event.target.value});
     }
 
     onChangeEmail = (event) => {
-        this.setState({email: event.target.value});
+        this.setState({emailR: event.target.value});
     }
 
     onChangePassword = (event) => {
-        this.setState({password: event.target.value});
+        this.setState({passwordR: event.target.value});
+        console.log(this.state.passwordR)
     }
 
     onRegister = () => {
@@ -28,12 +29,19 @@ class Register extends Component{
             method: 'put',
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify({
-                name: this.state.name,
-                email: this.state.email,
-                password: this.state.password,
+                name: this.state.nameR,
+                email: this.state.emailR,
+                password: this.state.passwordR,
             })
-        });
-        this.props.changePage('home');
+        })
+            .then(response => response.json())
+            .then(user => {
+                if(user){
+                    this.props.loadUser(user)
+                    this.props.changePage('home');
+                }
+            })
+        /* this.props.changePage('home');  */
     }
 
     render(){
@@ -58,7 +66,13 @@ class Register extends Component{
                             </div>
                             </fieldset>
                             <div className="tc">
-                            <input onClick={this.onRegister} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in"/>
+                            <button 
+                                onClick={this.onRegister} 
+                                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
+                                type="button" 
+                                value="Sign in"
+                            >Sign In
+                            </button>
                             </div>
                         </form>
                     </div>
