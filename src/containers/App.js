@@ -77,9 +77,9 @@ class App extends Component{
 
 	changePage = (router) => {
 		if(router === 'home')
-			this.setState({isSignedIn: true})
+			this.setState({isSignedIn: true});
 		else
-			this.setState({isSignedIn: false})
+			this.setState({isSignedIn: false});
 		this.setState({router: router});
 	}
 

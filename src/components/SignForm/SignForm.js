@@ -5,38 +5,43 @@ class SignForm extends Component {
     constructor(){
         super();
         this.state = {
-            email: '',
-            password: ''
+            emailIn: '',
+            passwordIn: ''
         }
     }
 
-    componentDidMount() {
+  componentDidMount() {
         //segue esta path de um servidor e pega o result em json
        fetch('http://localhost:3000/')
            //transforma a response que veio do servidor em json
            .then(response => response.json())
            //imprime o dado que veio do servidor
            .then(data => console.log(data)) //podia ser só ".then(console.log())"
-   }
+   } 
 
    onEmailChange = (event) => {
-       this.setState({email: event.target.value});
+       this.setState({emailIn: event.target.value});
    }
 
    onPasswordChange = (event) => {
-        this.setState({password: event.target.value});
+        this.setState({passwordIn: event.target.value});
     }
 
     onSignIn = () => {
         fetch('http://localhost:3000/signin', {
-            method: 'post', //pode ser get, put ou delete tbm
-            headers: {'Content-type': 'application/json'},
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                email: this.state.email,
-                password: this.state.password
+                email: this.state.emailIn,
+                password: this.state.passwordIn,
             })
-        });
-        this.props.changePage('home');
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(data === 'sucesso') {
+                    this.props.changePage('home')
+                }
+            })
     }
 
     render(){
@@ -59,7 +64,18 @@ class SignForm extends Component {
                             </div>
                             </fieldset>
                             <div className="tc">
-                            <input onClick={this.onSignIn} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in"/>
+                            <button
+                                onClick={this.onSignIn} 
+                                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
+                                type="button" 
+                                value="Sign in"
+                            >Sign In</button>
+                            {/* <input 
+                                onClick={this.onSignIn} 
+                                className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
+                                type="submit" 
+                                value="Sign in"
+                            /> */}
                             </div>
                             <div className="lh-copy mt3 tc">
                             <a href="#0" className="f6 link dim black db" onClick={()=> changePage('register')} >Register</a>
