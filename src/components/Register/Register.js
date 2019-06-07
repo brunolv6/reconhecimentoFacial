@@ -21,7 +21,6 @@ class Register extends Component{
 
     onChangePassword = (event) => {
         this.setState({passwordR: event.target.value});
-        console.log(this.state.passwordR)
     }
 
     onRegister = () => {
