@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
 import Navigation from '../components/Navigation/Navigation';
 import Logo from '../components/Logo/Logo';
 import Forms from '../components/Forms/Forms';
@@ -21,10 +20,6 @@ const particlesOptions = {
 		}
 	}
 }
-
-const app = new Clarifai.App({
-		apiKey: '389ca1196dc6418eab2a0de6e8db5328'
-});
 
 const initialState = {
 	input: '',
@@ -89,8 +84,14 @@ class App extends Component{
 		this.setState({box: ''});
 		console.log('click');
 		this.setState({imgUrl: this.state.input}); /* tenho que passar pelo input antes, senão da erro específico */
-		app.models
-			.predict('a403429f2ddf4b49b307e318f00e528b', this.state.input)
+		fetch('http://localhost:3000/imageurl', {
+			method: 'post',
+			headers: {'Content-type': 'application/json'},
+			body: JSON.stringify({
+				input: this.state.input
+			})
+		})
+		.then(response => response.json())
 			.then(response => {
 				if(response){
 					fetch('http://localhost:3000/image', {

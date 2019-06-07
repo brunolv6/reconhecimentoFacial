@@ -35,7 +35,8 @@ class Register extends Component{
         })
             .then(response => response.json())
             .then(user => {
-                if(user){
+                //coloca .ID porque assim ele não aceita avisos 400, appenas usuarios que possuam algum .ID
+                if(user.id){
                     this.props.loadUser(user)
                     this.props.changePage('home');
                 }
