@@ -26,24 +26,26 @@ const app = new Clarifai.App({
 		apiKey: '389ca1196dc6418eab2a0de6e8db5328'
 });
 
+const initialState = {
+	input: '',
+	imgUrl: '',
+	router: 'signIn',
+	isSignedIn: false,
+	box: {},
+	user: {
+		id: '',
+		name: '',
+		email: '',
+		entries: 0,
+		joined: ''
+	}	
+}
+
 class App extends Component{
 	
 	constructor(){
 		super();
-		this.state = {
-			input: '',
-			imgUrl: '',
-			router: 'signIn',
-			isSignedIn: false,
-			box: {},
-			user: {
-				id: '',
-				name: '',
-				email: '',
-				entries: 0,
-				joined: ''
-			}
-		}
+		this.state = initialState;
 	}
  
 	
@@ -103,6 +105,7 @@ class App extends Component{
 							//importante fazer assim para mudar apenas um parametro no estado do user e não todos!!
 							this.setState(Object.assign(this.state.user, { entries: count}))
 						})
+						.catch(console.log);
 				}
 				this.displayFaceBox(this.calculateFace(response))
 			})
@@ -112,8 +115,10 @@ class App extends Component{
 	changePage = (router) => {
 		if(router === 'home')
 			this.setState({isSignedIn: true});
-		else
-			this.setState({isSignedIn: false});
+		else{
+			//limpa tudo quando faz signOut
+			this.setState(initialState);
+		}
 		this.setState({router: router});
 	}
 
