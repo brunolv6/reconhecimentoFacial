@@ -82,7 +82,6 @@ class App extends Component{
 
 	//recebe o valor da mudança dentro do input
 	onInputChange = (event) =>{
-		console.log(event.target.value);
 		this.setState({input: event.target.value});
 	}
 
